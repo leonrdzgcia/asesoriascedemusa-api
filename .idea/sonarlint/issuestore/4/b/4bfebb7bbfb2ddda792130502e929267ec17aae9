@@ -1,0 +1,11 @@
+
+
+java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ŞÏ©8½ú€´Ğ1
+
+java:S1319%"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(˜æ¡¼8½ú€´Ğ1
+’
+java:S1319*"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(µ¯€üÿÿÿÿ8½ú€´Ğ1
+_
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8Ìú€´Ğ1
+]	java:S125!"<This block of commented-out lines of code should be removed.(âõèïøÿÿÿÿ8ïšİí1
+X	java:S125B"<This block of commented-out lines of code should be removed.(äÒÚ÷8Ïù’´Ğ1

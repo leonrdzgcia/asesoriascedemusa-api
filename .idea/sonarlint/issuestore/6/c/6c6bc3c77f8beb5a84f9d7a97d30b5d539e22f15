@@ -1,0 +1,9 @@
+
+†
+java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(‹ú¼
+X
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ
+b
+java:S4684"@Replace this persistent entity with a simple POJO or DTO object.(´şÕôüÿÿÿÿ8¬‡¶Ç1
+]	java:S125"<This block of commented-out lines of code should be removed.(¥ÕÒúÿÿÿÿ8šŸñĞÔ1
+Q	java:S125'"<This block of commented-out lines of code should be removed.(ª ©à
