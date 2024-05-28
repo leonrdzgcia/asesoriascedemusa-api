@@ -1,11 +1,13 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.ExamenModel;
+import com.example.demo.models.UsuariosModel;
 import com.example.demo.services.ExamenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -48,5 +50,13 @@ public class ExamenController {
         }else{
             return "No pudo eliminar el examen con id" + matricula;
         }
+    }
+
+
+    //obtiene usuarios que concidan en base a la nombre
+    @GetMapping("/nivel")
+    public List<ExamenModel> obtenerExamenesporNivel(@RequestParam("nivel") String nivel){
+        //System.out.println(examenService.buscarExamenNivel(nivel).get(0).getNivel());
+        return this.examenService.buscarExamenNivel(nivel);
     }
 }
