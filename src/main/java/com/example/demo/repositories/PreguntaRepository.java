@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public interface PreguntaRepository extends CrudRepository<PreguntaModel, Long> {
     public abstract ArrayList<PreguntaModel> findByIdExamen(Long idExamen);
 
-    @Query(value = "select * from preguntas where id_Examen = ?1 order by id", nativeQuery = true)
+    @Query(value = "select * from u255965900_cedemusadb.preguntas where id_Examen = ?1 order by id", nativeQuery = true)
     public abstract ArrayList<PreguntaModel> searchByFullByIdExamenQNative(Long idExamen);
 
 }

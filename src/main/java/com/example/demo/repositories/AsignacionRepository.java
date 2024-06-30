@@ -14,7 +14,7 @@ public interface AsignacionRepository extends CrudRepository<AsignacionModel, Lo
 
     //List<AsignacionModel> findByMatriculad(String matricula);
 
-    @Query(value ="SELECT * FROM springdb.asignaciones u where u.matricula = ?1",nativeQuery = true)
+    @Query(value ="SELECT * FROM u255965900_cedemusadb.asignaciones u where u.matricula = ?1",nativeQuery = true)
     List<AsignacionModel> buscarMatricula(String matricula);
 
 }

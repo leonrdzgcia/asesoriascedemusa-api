@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ExamenJpaRepository extends JpaRepository<ExamenModel, Long> {
 
-    @Query(value ="SELECT * FROM springdb.examen u where u.nivel = ?1",nativeQuery = true)
+    @Query(value ="SELECT * FROM u255965900_cedemusadb.examen u where u.nivel = ?1",nativeQuery = true)
     List<ExamenModel> buscarExamenNivel(String nivel);
 }
