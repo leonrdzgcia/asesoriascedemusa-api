@@ -73,7 +73,7 @@ public class FileUploadController {
     }
 
     @GetMapping("/listaVideos")
-    public List<ArchivosftpModel> obtenerListaArchivos() {
+    public List<ArchivosftpModel> obtenerListaVideos() {
         FTPClient ftpClient = new FTPClient();
         List<ArchivosftpModel> archivos = null;
         try {
@@ -87,13 +87,12 @@ public class FileUploadController {
                 return null;
             }
             // Navegar al directorio deseado
-            ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/vid/");
+            ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/vid/");
             // Listar los archivos en el directorio
             FTPFile[] files = ftpClient.listFiles();
             System.out.println("FILES ----");
             System.out.println(files);
             archivos = new ArrayList<>();
-
             int index = 0;
             for (FTPFile file : files) {
                 if (file.isFile()) {
@@ -150,7 +149,6 @@ public class FileUploadController {
             System.out.println("FILES ----");
             System.out.println(files);
             archivos = new ArrayList<>();
-
             int index = 0;
             for (FTPFile file : files) {
                 if (file.isFile()) {
