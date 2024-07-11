@@ -72,8 +72,8 @@ public class FileUploadController {
         }
     }
 
-    @GetMapping("/listaVideos")
-    public List<ArchivosftpModel> obtenerListaVideos() {
+    /*@GetMapping("/listaVideos")
+    public List<ArchivosftpModel> obtenerListaVideos(@RequestParam("src") String src) {
         FTPClient ftpClient = new FTPClient();
         List<ArchivosftpModel> archivos = null;
         try {
@@ -104,9 +104,9 @@ public class FileUploadController {
                     System.out.println("Directorio: " + file.getName());
                 }
             }
-            /*System.out.println("LONGITUD DE ARCHIVOS = "+ files.length);
+            System.out.println("LONGITUD DE ARCHIVOS = "+ files.length);
             for (int i = 0; i < files.length; i++) {
-            }*/
+            }
             System.out.println("-- ARRAY FILES ");
             System.out.println(archivos);
             // Desconectar del servidor FTP
@@ -126,25 +126,41 @@ public class FileUploadController {
             }
         }
         return archivos;
-    }
+    }*/
 
     @GetMapping("/listaImagenes")
-    public List<ArchivosftpModel> obtenerListaImagenes() {
+    public List<ArchivosftpModel> obtenerListaImagenes( @RequestParam("src") int src) {
+        System.out.println("-- listaImagenes 1 ");
+        System.out.println(src);
+
         FTPClient ftpClient = new FTPClient();
         List<ArchivosftpModel> archivos = null;
+        System.out.println("-- listaImagenes 2 ");
         try {
+            System.out.println("-- listaImagenes 3 ");
             // Conectar al servidor FTP
             ftpClient.connect(ftpServer, ftpPort);
             ftpClient.login(ftpUsername, ftpPassword);
+            System.out.println("-- listaImagenes 4 ");
             // Verificar si la conexión fue exitosa
             int replyCode = ftpClient.getReplyCode();
+            System.out.println("-- listaImagenes 5 ");
             if (!FTPReply.isPositiveCompletion(replyCode)) {
                 System.out.println("Fallo en la conexión al servidor FTP");
                 return null;
             }
+            System.out.println("-- listaImagenes 6 ");
             // Navegar al directorio deseado
-            ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/");
-            // Listar los archivos en el directorio
+            if (src  == 1) {
+                System.out.println("-- es  1 ");
+                ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/vid/");
+
+            }else{
+                System.out.println("-- no es  1 ");
+                ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/");
+
+            }            // Listar los archivos en el directorio
+            System.out.println("-- listaImagenes 7 ");
             FTPFile[] files = ftpClient.listFiles();
             System.out.println("FILES ----");
             System.out.println(files);
@@ -160,9 +176,6 @@ public class FileUploadController {
                     System.out.println("Directorio: " + file.getName());
                 }
             }
-            /*System.out.println("LONGITUD DE ARCHIVOS = "+ files.length);
-            for (int i = 0; i < files.length; i++) {
-            }*/
             System.out.println("-- ARRAY FILES ");
             System.out.println(archivos);
             // Desconectar del servidor FTP
