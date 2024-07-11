@@ -72,7 +72,7 @@ public class FileUploadController {
         }
     }
 
-    @GetMapping("/lista")
+    @GetMapping("/listaVideos")
     public List<ArchivosftpModel> obtenerListaArchivos() {
         FTPClient ftpClient = new FTPClient();
         List<ArchivosftpModel> archivos = null;
@@ -88,6 +88,63 @@ public class FileUploadController {
             }
             // Navegar al directorio deseado
             ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/vid/");
+            // Listar los archivos en el directorio
+            FTPFile[] files = ftpClient.listFiles();
+            System.out.println("FILES ----");
+            System.out.println(files);
+            archivos = new ArrayList<>();
+
+            int index = 0;
+            for (FTPFile file : files) {
+                if (file.isFile()) {
+                    index++;
+                    System.out.println("Archivo: " + file.getName());
+                    archivos.add(new ArchivosftpModel(index, file.getName()));
+                } else if (file.isDirectory()) {
+                    index++;
+                    System.out.println("Directorio: " + file.getName());
+                }
+            }
+            /*System.out.println("LONGITUD DE ARCHIVOS = "+ files.length);
+            for (int i = 0; i < files.length; i++) {
+            }*/
+            System.out.println("-- ARRAY FILES ");
+            System.out.println(archivos);
+            // Desconectar del servidor FTP
+            ftpClient.logout();
+            ftpClient.disconnect();
+        } catch (IOException ex) {
+            System.out.println("Ocurrió un error: " + ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (ftpClient.isConnected()) {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return archivos;
+    }
+
+    @GetMapping("/listaImagenes")
+    public List<ArchivosftpModel> obtenerListaImagenes() {
+        FTPClient ftpClient = new FTPClient();
+        List<ArchivosftpModel> archivos = null;
+        try {
+            // Conectar al servidor FTP
+            ftpClient.connect(ftpServer, ftpPort);
+            ftpClient.login(ftpUsername, ftpPassword);
+            // Verificar si la conexión fue exitosa
+            int replyCode = ftpClient.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(replyCode)) {
+                System.out.println("Fallo en la conexión al servidor FTP");
+                return null;
+            }
+            // Navegar al directorio deseado
+            ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/");
             // Listar los archivos en el directorio
             FTPFile[] files = ftpClient.listFiles();
             System.out.println("FILES ----");
