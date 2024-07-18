@@ -17,6 +17,7 @@ public class ResultadoModel {
     private String totalPreguntas;
     private String calificacion;
     private String preguntasIncorrectas;
+    private String preguntasCorrectas;
 
     public Long getId() {
         return id;
@@ -80,5 +81,12 @@ public class ResultadoModel {
 
     public void setPreguntasIncorrectas(String preguntasIncorrectas) {
         this.preguntasIncorrectas = preguntasIncorrectas;
+    }
+
+    public String getPreguntasCorrectas() {
+        return preguntasCorrectas;
+    }
+    public void setPreguntasCorrectas(String preguntasCorrectas) {
+        this.preguntasCorrectas = preguntasCorrectas;
     }
 }

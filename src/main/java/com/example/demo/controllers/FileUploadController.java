@@ -48,7 +48,8 @@ public class FileUploadController {
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
             //boolean uploaded = ftpClient.storeFile("/domains/asesoriascedemusa.com/public_html/assets/img/" + file.getOriginalFilename(), inputStream);
-            boolean uploaded = ftpClient.storeFile("/domains/asesoriascedemusa.com/public_html/assets/img/vid/" + file.getOriginalFilename(), inputStream);
+            boolean uploaded = ftpClient.storeFile("/domains/asesoriascedemusa.com/public_html/assets/vid/"
+                    + file.getOriginalFilename(), inputStream);
             if (uploaded) {
                 System.out.println("Archivo subido exitosamente");
                 return new ResponseEntity<>("Archivo subido exitosamente", HttpStatus.OK);
