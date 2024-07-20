@@ -33,6 +33,7 @@ public class FileUploadController {
     private String ftpUsername;
     @Value("${ftp.password}")
     private String ftpPassword;
+
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
@@ -73,94 +74,30 @@ public class FileUploadController {
         }
     }
 
-    /*@GetMapping("/listaVideos")
-    public List<ArchivosftpModel> obtenerListaVideos(@RequestParam("src") String src) {
-        FTPClient ftpClient = new FTPClient();
-        List<ArchivosftpModel> archivos = null;
-        try {
-            // Conectar al servidor FTP
-            ftpClient.connect(ftpServer, ftpPort);
-            ftpClient.login(ftpUsername, ftpPassword);
-            // Verificar si la conexión fue exitosa
-            int replyCode = ftpClient.getReplyCode();
-            if (!FTPReply.isPositiveCompletion(replyCode)) {
-                System.out.println("Fallo en la conexión al servidor FTP");
-                return null;
-            }
-            // Navegar al directorio deseado
-            ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/vid/");
-            // Listar los archivos en el directorio
-            FTPFile[] files = ftpClient.listFiles();
-            System.out.println("FILES ----");
-            System.out.println(files);
-            archivos = new ArrayList<>();
-            int index = 0;
-            for (FTPFile file : files) {
-                if (file.isFile()) {
-                    index++;
-                    System.out.println("Archivo: " + file.getName());
-                    archivos.add(new ArchivosftpModel(index, file.getName()));
-                } else if (file.isDirectory()) {
-                    index++;
-                    System.out.println("Directorio: " + file.getName());
-                }
-            }
-            System.out.println("LONGITUD DE ARCHIVOS = "+ files.length);
-            for (int i = 0; i < files.length; i++) {
-            }
-            System.out.println("-- ARRAY FILES ");
-            System.out.println(archivos);
-            // Desconectar del servidor FTP
-            ftpClient.logout();
-            ftpClient.disconnect();
-        } catch (IOException ex) {
-            System.out.println("Ocurrió un error: " + ex.getMessage());
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (ftpClient.isConnected()) {
-                    ftpClient.logout();
-                    ftpClient.disconnect();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return archivos;
-    }*/
 
-    @GetMapping("/listaImagenes")
+
+    @GetMapping("/archivos")
     public List<ArchivosftpModel> obtenerListaImagenes( @RequestParam("src") int src) {
-        System.out.println("-- listaImagenes 1 ");
-        System.out.println(src);
-
+        System.out.println("-- listaImagenes 1 " + src );// 1 video / 2 imagenes
         FTPClient ftpClient = new FTPClient();
         List<ArchivosftpModel> archivos = null;
-        System.out.println("-- listaImagenes 2 ");
-        try {
-            System.out.println("-- listaImagenes 3 ");
-            // Conectar al servidor FTP
-            ftpClient.connect(ftpServer, ftpPort);
+        try {;
+            ftpClient.connect(ftpServer, ftpPort);// Conectar al servidor FTP
             ftpClient.login(ftpUsername, ftpPassword);
-            System.out.println("-- listaImagenes 4 ");
-            // Verificar si la conexión fue exitosa
-            int replyCode = ftpClient.getReplyCode();
-            System.out.println("-- listaImagenes 5 ");
+            int replyCode = ftpClient.getReplyCode();// Verificar si la conexión fue exitosa
             if (!FTPReply.isPositiveCompletion(replyCode)) {
                 System.out.println("Fallo en la conexión al servidor FTP");
                 return null;
             }
-            System.out.println("-- listaImagenes 6 ");
-            // Navegar al directorio deseado
-            if (src  == 1) {
-                System.out.println("-- es  1 ");
+            if (src  == 1) {// Navegar al directorio deseado
+                System.out.println("-- es  1 VID ");
                 ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/vid/");
-
-            }else{
-                System.out.println("-- no es  1 ");
+            }
+            if (src  == 2) {
+                System.out.println("--  es  2 IMG ");
                 ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/");
-
-            }            // Listar los archivos en el directorio
+            }
+            // Listar los archivos en el directorio
             System.out.println("-- listaImagenes 7 ");
             FTPFile[] files = ftpClient.listFiles();
             System.out.println("FILES ----");
@@ -179,8 +116,7 @@ public class FileUploadController {
             }
             System.out.println("-- ARRAY FILES ");
             System.out.println(archivos);
-            // Desconectar del servidor FTP
-            ftpClient.logout();
+            ftpClient.logout();// Desconectar del servidor FTP
             ftpClient.disconnect();
         } catch (IOException ex) {
             System.out.println("Ocurrió un error: " + ex.getMessage());
@@ -196,5 +132,85 @@ public class FileUploadController {
             }
         }
         return archivos;
+    }
+
+
+    @GetMapping("/listFiles")
+    public List<String> listFiles() throws IOException {
+        System.out.println("-- listFiles ");
+        FTPClient ftpClient = new FTPClient();
+        List<String> fileNames = new ArrayList<>();
+        try {
+            ftpClient.connect(ftpServer, ftpPort);
+            ftpClient.login(ftpUsername, ftpPassword);
+            ftpClient.enterLocalPassiveMode();
+            ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/vid/");
+            FTPFile[] files = ftpClient.listFiles();
+            for (FTPFile file : files) {
+                if (file.isFile()) {
+                    fileNames.add(file.getName());
+                }
+            }
+        } finally {
+            if (ftpClient.isConnected()) {
+                ftpClient.logout();
+                ftpClient.disconnect();
+            }
+        }
+        return fileNames;
+    }
+
+    @GetMapping("/deleteFileG")
+    public String  eliminarArchivosG (@RequestParam("src") String src)  {
+        boolean flag;
+        try {
+            flag = this.deleteFile(src);
+            //System.out.println("-- deleteFile ");
+            if (flag ) {
+                System.out.println(flag);
+                return "Archivo eliminado";
+            }else {
+                System.out.println(flag);
+                return "Archivo no se a eliminado";
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }//return "Received: eliminarArchivosP";
+    }
+
+
+    @PostMapping("/deleteFileP")
+    public String  eliminarArchivosP (@RequestParam("src") String src)  {
+        boolean flag;
+        try {
+            flag = this.deleteFile(src);
+            //System.out.println("-- deleteFile ");
+            if (flag ) {
+                System.out.println(flag);
+                return "Archivo eliminado";
+            }else {
+                System.out.println(flag);
+                return "Archivo no se a eliminado";
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }//return "Received: eliminarArchivosP";
+    }
+
+    public boolean deleteFile(String remoteFilePath) throws IOException {
+        System.out.println(remoteFilePath);
+        FTPClient ftpClient = new FTPClient();
+        ftpClient.connect(ftpServer, ftpPort);
+        ftpClient.login(ftpUsername, ftpPassword);
+        ftpClient.enterLocalPassiveMode();
+        System.out.println("-- deleteFile 5");
+        boolean deleted = ftpClient.deleteFile(remoteFilePath);
+        System.out.println("-- deleteFile 6");
+        System.out.println(deleted);
+        /*if (!deleted) {throw new IOException("Could not delete file: " + ftpClient.getReplyString());}*/
+        System.out.println("-- deleteFile 7");
+        ftpClient.logout();
+        ftpClient.disconnect();
+        return deleted;
     }
 }

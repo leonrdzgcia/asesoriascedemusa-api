@@ -3,10 +3,13 @@ package com.example.demo.models;
 public class ArchivosftpModel {
     private int id;
     private String nombreArchivo;
+    private String ruta;
 
     public ArchivosftpModel(int id, String nombreArchivo ) {
         this.id= id;
         this.nombreArchivo = nombreArchivo;
+        this.nombreArchivo = nombreArchivo;
+
     }
 
     public int getId() {
