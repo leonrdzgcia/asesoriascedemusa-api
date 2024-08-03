@@ -101,15 +101,20 @@ public class FileUploadController {
             // Listar los archivos en el directorio
             System.out.println("-- listaImagenes 7 ");
             FTPFile[] files = ftpClient.listFiles();
-
+            System.out.println("-- listaImagenes 8");
             String[] sfiles = null;
+            System.out.println("-- listaImagenes 9 ");
             archivos = new ArrayList<>();
+            System.out.println("-- listaImagenes 10");
             if (files != null) {
+                System.out.println("-- listaImagenes 11 ");
                 sfiles = new String[files.length];
+                System.out.println("-- listaImagenes 12 ");
                 for (int i = 0; i < files.length; i++) {
                     //System.out.println(sfiles[i] = files[i].getName());
                     archivos.add(new ArchivosftpModel(i, files[i].getName()));
                 }
+                System.out.println("-- listaImagenes 13 ");
             }
             System.out.println("FILES 2----");
             //System.out.println(files);
