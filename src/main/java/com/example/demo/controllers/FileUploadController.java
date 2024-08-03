@@ -91,7 +91,7 @@ public class FileUploadController {
             }
             if (src  == 1) {// Navegar al directorio deseado
                 System.out.println("-- es  1 VID ");
-                ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/vid/");
+                ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/vid/");
             }
             if (src  == 2) {
                 System.out.println("--  es  2 IMG ");
