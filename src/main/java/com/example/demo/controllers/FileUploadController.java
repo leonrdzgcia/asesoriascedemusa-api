@@ -33,6 +33,7 @@ public class FileUploadController {
     private String ftpUsername;
     @Value("${ftp.password}")
     private String ftpPassword;
+    private List<ArchivosftpModel> sfiles;
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -100,24 +101,24 @@ public class FileUploadController {
             // Listar los archivos en el directorio
             System.out.println("-- listaImagenes 7 ");
             FTPFile[] files = ftpClient.listFiles();
-            System.out.println("FILES ----");
-            System.out.println(files);
+
+            String[] sfiles = null;
             archivos = new ArrayList<>();
-            int index = 0;
-            for (FTPFile file : files) {
-                if (file.isFile()) {
-                    index++;
-                    System.out.println("Archivo: " + file.getName());
-                    archivos.add(new ArchivosftpModel(index, file.getName()));
-                } else if (file.isDirectory()) {
-                    index++;
-                    System.out.println("Directorio: " + file.getName());
+            if (files != null) {
+                sfiles = new String[files.length];
+                for (int i = 0; i < files.length; i++) {
+                    //System.out.println(sfiles[i] = files[i].getName());
+                    archivos.add(new ArchivosftpModel(i, files[i].getName()));
                 }
             }
-            System.out.println("-- ARRAY FILES ");
-            System.out.println(archivos);
+            System.out.println("FILES 2----");
+            //System.out.println(files);
+            //archivos = new ArrayList<>();
+            System.out.println("-- ARRAY FILES 3");
+            //System.out.println(archivos);
             ftpClient.logout();// Desconectar del servidor FTP
             ftpClient.disconnect();
+            System.out.println("-- ARRAY FILES 4");
         } catch (IOException ex) {
             System.out.println("Ocurrió un error: " + ex.getMessage());
             ex.printStackTrace();
