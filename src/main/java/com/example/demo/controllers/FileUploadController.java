@@ -81,10 +81,23 @@ public class FileUploadController {
     public List<ArchivosftpModel> obtenerListaImagenes( @RequestParam("src") int src) {
         System.out.println("-- listaImagenes 1 " + src );// 1 video / 2 imagenes
         FTPClient ftpClient = new FTPClient();
+        ftpClient.setConnectTimeout(600000);
+        ftpClient.setDefaultTimeout(600000);
         List<ArchivosftpModel> archivos = null;
-        try {;
-            ftpClient.connect(ftpServer, ftpPort);// Conectar al servidor FTP
-            ftpClient.login(ftpUsername, ftpPassword);
+        try {
+
+            try {
+                /*client.connect(config.getHost(), config.getPort());
+                client.setSoTimeout(600000);*/
+                ftpClient.connect(ftpServer, ftpPort);// Conectar al servidor FTP
+                ftpClient.setSoTimeout(600000);
+                ftpClient.login(ftpUsername, ftpPassword);
+            } catch (IOException ex) {
+                System.out.println("Error in connecting en el tiempo de conexion: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+            //ftpClient.connect(ftpServer, ftpPort);// Conectar al servidor FTP
+            //ftpClient.login(ftpUsername, ftpPassword);
             int replyCode = ftpClient.getReplyCode();// Verificar si la conexión fue exitosa
             if (!FTPReply.isPositiveCompletion(replyCode)) {
                 System.out.println("Fallo en la conexión al servidor FTP");
