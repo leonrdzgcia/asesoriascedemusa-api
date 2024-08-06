@@ -90,8 +90,16 @@ public class FileUploadController {
                 /*client.connect(config.getHost(), config.getPort());
                 client.setSoTimeout(600000);*/
                 ftpClient.connect(ftpServer, ftpPort);// Conectar al servidor FTP
-                ftpClient.setSoTimeout(600000);
+                //ftpClient.setSoTimeout(600000);
                 ftpClient.login(ftpUsername, ftpPassword);
+
+                // Configurar modo pasivo y tiempos de espera
+                ftpClient.enterLocalPassiveMode();
+                ftpClient.setConnectTimeout(30000);
+                ftpClient.setSoTimeout(30000);
+
+
+
             } catch (IOException ex) {
                 System.out.println("Error in connecting en el tiempo de conexion: " + ex.getMessage());
                 ex.printStackTrace();
