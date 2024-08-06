@@ -2,10 +2,12 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.ArchivosftpModel;
 import com.example.demo.models.AsignacionModel;
+import com.example.demo.services.FtpService;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -35,6 +40,9 @@ public class FileUploadController {
     private String ftpPassword;
     private List<ArchivosftpModel> sfiles;
 
+    @Autowired
+    private FtpService ftpService;
+
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
@@ -42,7 +50,7 @@ public class FileUploadController {
         }
         FTPClient ftpClient = new FTPClient();
         System.out.println("VALIDACIONES ");
-        System.out.println(ftpServer+ftpPort+ftpUsername+ftpPassword);
+        System.out.println(ftpServer + ftpPort + ftpUsername + ftpPassword);
         System.out.println("VALIDACIONES FIN");
         try (InputStream inputStream = file.getInputStream()) {
             ftpClient.connect(ftpServer, ftpPort);
@@ -76,91 +84,15 @@ public class FileUploadController {
     }
 
 
-
     @GetMapping("/archivos")
-    public List<ArchivosftpModel> obtenerListaImagenes( @RequestParam("src") int src) {
-        System.out.println("-- listaImagenes 1 " + src );// 1 video / 2 imagenes
-        FTPClient ftpClient = new FTPClient();
-        ftpClient.setConnectTimeout(600000);
-        ftpClient.setDefaultTimeout(600000);
-        List<ArchivosftpModel> archivos = null;
+    public List<ArchivosftpModel> obtenerListaImagenes(@RequestParam("src") int src) throws IOException {
         try {
-
-            try {
-                /*client.connect(config.getHost(), config.getPort());
-                client.setSoTimeout(600000);*/
-                ftpClient.connect(ftpServer, ftpPort);// Conectar al servidor FTP
-                //ftpClient.setSoTimeout(600000);
-                ftpClient.login(ftpUsername, ftpPassword);
-
-                // Configurar modo pasivo y tiempos de espera
-                ftpClient.enterLocalPassiveMode();
-                ftpClient.setConnectTimeout(30000);
-                ftpClient.setSoTimeout(30000);
-
-
-
-            } catch (IOException ex) {
-                System.out.println("Error in connecting en el tiempo de conexion: " + ex.getMessage());
-                ex.printStackTrace();
-            }
-            //ftpClient.connect(ftpServer, ftpPort);// Conectar al servidor FTP
-            //ftpClient.login(ftpUsername, ftpPassword);
-            int replyCode = ftpClient.getReplyCode();// Verificar si la conexión fue exitosa
-            if (!FTPReply.isPositiveCompletion(replyCode)) {
-                System.out.println("Fallo en la conexión al servidor FTP");
-                return null;
-            }
-            if (src  == 1) {// Navegar al directorio deseado
-                System.out.println("-- es  1 VID ");
-                ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/vid/");
-            }
-            if (src  == 2) {
-                System.out.println("--  es  2 IMG ");
-                ftpClient.changeWorkingDirectory("/domains/asesoriascedemusa.com/public_html/assets/img/");
-            }
-            // Listar los archivos en el directorio
-            System.out.println("-- listaImagenes 7 ");
-            FTPFile[] files = ftpClient.listFiles();
-            System.out.println("-- listaImagenes 8");
-            String[] sfiles = null;
-            System.out.println("-- listaImagenes 9 ");
-            archivos = new ArrayList<>();
-            System.out.println("-- listaImagenes 10");
-            if (files != null) {
-                System.out.println("-- listaImagenes 11 ");
-                sfiles = new String[files.length];
-                System.out.println("-- listaImagenes 12 ");
-                for (int i = 0; i < files.length; i++) {
-                    //System.out.println(sfiles[i] = files[i].getName());
-                    archivos.add(new ArchivosftpModel(i, files[i].getName()));
-                }
-                System.out.println("-- listaImagenes 13 ");
-            }
-            System.out.println("FILES 2----");
-            //System.out.println(files);
-            //archivos = new ArrayList<>();
-            System.out.println("-- ARRAY FILES 3");
-            //System.out.println(archivos);
-            ftpClient.logout();// Desconectar del servidor FTP
-            ftpClient.disconnect();
-            System.out.println("-- ARRAY FILES 4");
-        } catch (IOException ex) {
-            System.out.println("Ocurrió un error: " + ex.getMessage());
-            ex.printStackTrace();
+            List<ArchivosftpModel> fileList = ftpService.listFiles(src);
+            return fileList;
         } finally {
-            try {
-                if (ftpClient.isConnected()) {
-                    ftpClient.logout();
-                    ftpClient.disconnect();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return archivos;
-    }
 
+        }
+    }
 
     @GetMapping("/listFiles")
     public List<String> listFiles() throws IOException {
@@ -188,15 +120,15 @@ public class FileUploadController {
     }
 
     @GetMapping("/deleteFileG")
-    public String  eliminarArchivosG (@RequestParam("src") String src)  {
+    public String eliminarArchivosG(@RequestParam("src") String src) {
         boolean flag;
         try {
             flag = this.deleteFile(src);
             //System.out.println("-- deleteFile ");
-            if (flag ) {
+            if (flag) {
                 System.out.println(flag);
                 return "Archivo eliminado";
-            }else {
+            } else {
                 System.out.println(flag);
                 return "Archivo no se a eliminado";
             }
@@ -207,15 +139,15 @@ public class FileUploadController {
 
 
     @PostMapping("/deleteFileP")
-    public String  eliminarArchivosP (@RequestParam("src") String src)  {
+    public String eliminarArchivosP(@RequestParam("src") String src) {
         boolean flag;
         try {
             flag = this.deleteFile(src);
             //System.out.println("-- deleteFile ");
-            if (flag ) {
+            if (flag) {
                 System.out.println(flag);
                 return "Archivo eliminado";
-            }else {
+            } else {
                 System.out.println(flag);
                 return "Archivo no se a eliminado";
             }
