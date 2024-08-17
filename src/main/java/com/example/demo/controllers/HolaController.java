@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HolaController {
     @GetMapping()
     public String inicio(){
-        return "Hola esta funcionando 3-08-2024";
+        return "Hola esta funcionando 17-08-2024";
     }
 }

@@ -36,6 +36,12 @@ public class AsignacionesController {
         return this.asignacionService.buscarAsigMatricula(matricula);
     }
 
+    @GetMapping("/matriculaV")
+    public List<AsignacionModel> obtenerVideoPorMatricula(@RequestParam("matricula") String matricula) {
+        //System.out.println(asignacionService.buscarAsignacionVideoMatricula(matricula,0).get(0).getMatricula());
+        return this.asignacionService.buscarAsignacionVideoMatricula(matricula);
+    }
+
     //obtiene usuarios en base a la matricula
     @GetMapping("/idExamen")
     public List<AsignacionModel> obtenerAsignacionExamen(@RequestParam("matricula") String matricula) {

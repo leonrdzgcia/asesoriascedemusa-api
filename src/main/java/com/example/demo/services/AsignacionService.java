@@ -30,6 +30,10 @@ public class AsignacionService {
         return asignacionRepository.buscarMatricula(matricula);
     }
 
+    public List<AsignacionModel> buscarAsignacionVideoMatricula(String matricula){
+        return asignacionRepository.asignacionVideoPorMatricula(matricula,0);
+    }
+
 
 
 }
