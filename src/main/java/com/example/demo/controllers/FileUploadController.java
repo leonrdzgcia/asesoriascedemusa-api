@@ -49,19 +49,19 @@ public class FileUploadController {
             return new ResponseEntity<>("Archivo no válido", HttpStatus.BAD_REQUEST);
         }
         FTPClient ftpClient = new FTPClient();
-        System.out.println("VALIDACIONES ");
+        System.out.println("VALIDACIONES 20");
         System.out.println(ftpServer + ftpPort + ftpUsername + ftpPassword);
-        System.out.println("VALIDACIONES FIN");
+        System.out.println("VALIDACIONES FIN  20");
         try (InputStream inputStream = file.getInputStream()) {
             ftpClient.connect(ftpServer, ftpPort);
             ftpClient.login(ftpUsername, ftpPassword);
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
             //boolean uploaded = ftpClient.storeFile("/domains/asesoriascedemusa.com/public_html/assets/img/" + file.getOriginalFilename(), inputStream);
-            boolean uploaded = ftpClient.storeFile("/domains/asesoriascedemusa.com/public_html/assets/vid/"
+            boolean uploaded = ftpClient.storeFile("/domains/asesoriascedemusa.com/public_html/assets/img/vid/"
                     + file.getOriginalFilename(), inputStream);
             if (uploaded) {
-                System.out.println("Archivo subido exitosamente");
+                System.out.println("Archivo subido exitosamente 20");
                 return new ResponseEntity<>("Archivo subido exitosamente", HttpStatus.OK);
             } else {
                 System.out.println("Error al subir el archivo");
@@ -83,17 +83,14 @@ public class FileUploadController {
         }
     }
 
-
     @GetMapping("/archivos")
     public List<ArchivosftpModel> obtenerListaImagenes(@RequestParam("src") int src) throws IOException {
         try {
             List<ArchivosftpModel> fileList = ftpService.listFiles(src);
             return fileList;
         } finally {
-
         }
     }
-
     @GetMapping("/listFiles")
     public List<String> listFiles() throws IOException {
         System.out.println("-- listFiles ");
@@ -118,7 +115,6 @@ public class FileUploadController {
         }
         return fileNames;
     }
-
     @GetMapping("/deleteFileG")
     public String eliminarArchivosG(@RequestParam("src") String src) {
         boolean flag;
@@ -136,8 +132,6 @@ public class FileUploadController {
             throw new RuntimeException(e);
         }//return "Received: eliminarArchivosP";
     }
-
-
     @PostMapping("/deleteFileP")
     public String eliminarArchivosP(@RequestParam("src") String src) {
         boolean flag;
@@ -155,7 +149,6 @@ public class FileUploadController {
             throw new RuntimeException(e);
         }//return "Received: eliminarArchivosP";
     }
-
     public boolean deleteFile(String remoteFilePath) throws IOException {
         System.out.println(remoteFilePath);
         FTPClient ftpClient = new FTPClient();
