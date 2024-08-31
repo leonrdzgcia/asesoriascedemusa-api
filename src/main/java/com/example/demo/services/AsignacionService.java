@@ -34,6 +34,12 @@ public class AsignacionService {
         return asignacionRepository.asignacionVideoPorMatricula(matricula,0);
     }
 
+    public void eliminar(String nombreVideo){
+        System.out.println("-------eliminar");
+        System.out.println(nombreVideo);
+        asignacionRepository.eliminarAsignacionVideo(nombreVideo);
+    }
+
 
 
 }

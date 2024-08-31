@@ -48,4 +48,20 @@ public class AsignacionesController {
         System.out.println(asignacionService.buscarAsigMatricula(matricula).get(0).getMatricula());
         return this.asignacionService.buscarAsigMatricula(matricula);
     }
+
+    @DeleteMapping("/asignaciondelete")
+    public String deleteUser(@RequestParam String nombreVideo) {
+        System.out.println("--------deleteUser");
+        System.out.println(nombreVideo);
+        asignacionService.eliminar(nombreVideo);
+        return "User deleted successfully";
+    }
+
+    @GetMapping("/asignaciondeleteg")
+    public String deleteUserg(@RequestParam String nombreVideo) {
+        System.out.println("--------deleteUser");
+        System.out.println(nombreVideo);
+        asignacionService.eliminar(nombreVideo);
+        return "User deleted successfully";
+    }
 }
