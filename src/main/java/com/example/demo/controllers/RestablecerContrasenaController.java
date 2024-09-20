@@ -14,7 +14,7 @@ public class RestablecerContrasenaController {
     @Autowired
     private RestablecerContrasenaService restablecerContrasenaService;
 
-    @PostMapping("/restablecer")
+    /*@PostMapping("/restablecer")
     public String restablecerContraseña(@RequestParam("email") String email) {
         try {
             restablecerContrasenaService.enviarCorreoRestablecimiento(email);
@@ -23,7 +23,6 @@ public class RestablecerContrasenaController {
             return "Error al enviar el correo de restablecimiento: " + e.getMessage();
         }
     }
-
     @GetMapping("/restablecer")
     public String mostrarFormularioRestablecimiento(@RequestParam("token") String token) {
         Optional<UsuarioMailModel> usuario = restablecerContrasenaService.obtenerUsuarioPorToken(token);
@@ -34,10 +33,8 @@ public class RestablecerContrasenaController {
             return "Token de restablecimiento inválido";
         }
     }
-
     @PostMapping("/actualizar")
-    public String actualizarContraseña(@RequestParam("token") String token,
-                                       @RequestParam("nuevaContraseña") String nuevaContraseña) {
+    public String actualizarContraseña(@RequestParam("token") String token, @RequestParam("nuevaContraseña") String nuevaContraseña) {
         Optional<UsuarioMailModel> optionalUsuario = restablecerContrasenaService.obtenerUsuarioPorToken(token);
         if (optionalUsuario.isPresent()) {
             UsuarioMailModel usuario = optionalUsuario.get();
@@ -46,5 +43,5 @@ public class RestablecerContrasenaController {
         } else {
             return "Token de restablecimiento inválido";
         }
-    }
+    }*/
 }

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.controllers.VideoModel;
 import com.example.demo.models.AsignacionModel;
 import com.example.demo.models.ExamenModel;
 import com.example.demo.repositories.AsignacionRepository;
@@ -28,6 +29,10 @@ public class AsignacionService {
 
     public List<AsignacionModel> buscarAsigMatricula(String matricula){
         return asignacionRepository.buscarMatricula(matricula);
+    }
+
+    public List<VideoModel> buscarVideos(){
+        return asignacionRepository.buscarVideos();
     }
 
     public List<AsignacionModel> buscarAsignacionVideoMatricula(String matricula){
