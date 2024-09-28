@@ -10,6 +10,8 @@ public class AsignacionModel {
     @Column(name="id_asignacion",unique = true, nullable = false)
     private Long idAsignacion;
     private String idExamen;
+    @Column(name="id_video")
+    private String idVideo;
     private String nombreExamen;
     private String matricula;
     private String nombre;
@@ -30,6 +32,14 @@ public class AsignacionModel {
 
     public void setIdExamen(String idExamen) {
         this.idExamen = idExamen;
+    }
+
+    public String getIdVideo() {
+        return idVideo;
+    }
+
+    public void setIdVideo(String idVideo) {
+        this.idVideo = idVideo;
     }
 
     public String getNombreExamen() {

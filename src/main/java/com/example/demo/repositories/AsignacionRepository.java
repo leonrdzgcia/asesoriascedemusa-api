@@ -22,7 +22,7 @@ public interface AsignacionRepository extends CrudRepository<AsignacionModel, Lo
     @Query(value ="SELECT * FROM u255965900_cedemusadb.videos v order by v.id",nativeQuery = true)
     List<VideoModel> buscarVideos();
 
-    @Query(value ="SELECT * FROM u255965900_cedemusadb.asignaciones u where u.matricula = ?1 and u.id_examen =?2",nativeQuery = true)
+    @Query(value ="SELECT * FROM u255965900_cedemusadb.asignaciones u where u.matricula = ?1 and u.id_examen =?2 order by id_video",nativeQuery = true)
     List<AsignacionModel> asignacionVideoPorMatricula(String matricula, int id_examen);
 
     @Modifying
