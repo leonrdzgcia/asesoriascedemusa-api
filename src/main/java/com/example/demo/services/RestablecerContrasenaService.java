@@ -17,13 +17,13 @@ public class RestablecerContrasenaService {
     private JavaMailSender mailSender;
 
     public void enviarCorreoRestablecimiento(String email) {
-        /*Optional<UsuarioMailModel> optionalUsuario = usuarioRepository.findByEmail(email);
+        Optional<UsuarioMailModel> optionalUsuario = usuarioRepository.findByEmail(email);
         if (!optionalUsuario.isPresent()) {
             throw new RuntimeException("Usuario no encontrado");
         }
         UsuarioMailModel usuario = optionalUsuario.get();
         usuario.setResetToken(UUID.randomUUID().toString());
-        usuarioRepository.save(usuario);*/
+        usuarioRepository.save(usuario);
         /*SimpleMailMessage correo = new SimpleMailMessage();
         //correo.setTo(usuario.getEmail());
         correo.setTo("leongarzagarza@hotmail.com");
@@ -35,9 +35,9 @@ public class RestablecerContrasenaService {
         return usuarioRepository.findByResetToken(token);
     }
     public void actualizarContrasena(UsuarioMailModel usuario, String nuevaContraseña) {
-        /*usuario.setResetToken(null);
+        usuario.setResetToken(null);
         // Aquí deberías cifrar la contraseña antes de guardarla
-        usuario.setPassword(nuevaContraseña);
-        usuarioRepository.save(usuario);*/
+        // usuario.setPassword(nuevaContraseña);
+        usuarioRepository.save(usuario);
     }
 }
