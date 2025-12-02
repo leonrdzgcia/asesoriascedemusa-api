@@ -66,7 +66,6 @@ public class FtpService {
                     fileList.add(new ArchivosftpModel(cont, files[i].getName()));
                     cont++;
                 }
-                System.out.println("FIN FOR ");
             }
         } finally {
             if (ftpClient.isConnected()) {
