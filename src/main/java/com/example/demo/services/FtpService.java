@@ -57,12 +57,10 @@ public class FtpService {
             }*/
             int cont = 0;
             for (int i = 0; i < files.length; i++) {
-                System.out.println("INICIO FOR "+ i);
                 //System.out.println( i + "/"+files[i].getName());
                 if (files[i].getName().toString().equals(".") || files[i].getName().toString().equals("..")){
                     System.out.println( i + "/"+files[i].getName());
                     //fileList.add(new ArchivosftpModel(i, files[i].getName()));
-
                 }else{
                     //System.out.println( i + "/"+files[i].getName());
                     fileList.add(new ArchivosftpModel(cont, files[i].getName()));

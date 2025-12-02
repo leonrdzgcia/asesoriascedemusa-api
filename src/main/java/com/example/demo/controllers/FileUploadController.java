@@ -45,6 +45,7 @@ public class FileUploadController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        System.out.println("-- /upload ");
         if (file.isEmpty()) {
             return new ResponseEntity<>("Archivo no válido", HttpStatus.BAD_REQUEST);
         }
@@ -85,6 +86,7 @@ public class FileUploadController {
 
     @GetMapping("/archivos")
     public List<ArchivosftpModel> obtenerListaImagenes(@RequestParam("src") int src) throws IOException {
+        System.out.println("-- /archivos ");
         try {
             List<ArchivosftpModel> fileList = ftpService.listFiles(src);
             return fileList;
@@ -93,7 +95,8 @@ public class FileUploadController {
     }
     @GetMapping("/listFiles")
     public List<String> listFiles() throws IOException {
-        System.out.println("-- listFiles ");
+        System.out.println("-- /listFiles ");
+
         FTPClient ftpClient = new FTPClient();
         List<String> fileNames = new ArrayList<>();
         try {
@@ -117,6 +120,7 @@ public class FileUploadController {
     }
     @GetMapping("/deleteFileG")
     public String eliminarArchivosG(@RequestParam("src") String src) {
+        System.out.println("-- /deleteFileG ");
         boolean flag;
         try {
             flag = this.deleteFile(src);
@@ -134,6 +138,7 @@ public class FileUploadController {
     }
     @PostMapping("/deleteFileP")
     public String eliminarArchivosP(@RequestParam("src") String src) {
+        System.out.println("-- /deleteFileP ");
         boolean flag;
         try {
             flag = this.deleteFile(src);
