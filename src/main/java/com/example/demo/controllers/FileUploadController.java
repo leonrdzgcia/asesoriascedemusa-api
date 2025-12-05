@@ -44,34 +44,90 @@ public class FileUploadController {
     private FtpService ftpService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(
+            @RequestParam("file") MultipartFile[] files,
+            @RequestParam(value = "src", defaultValue = "2") int src) {
         System.out.println("-- /upload ");
-        if (file.isEmpty()) {
-            return new ResponseEntity<>("Archivo no válido", HttpStatus.BAD_REQUEST);
+        System.out.println("-- src: " + src);
+        System.out.println("-- Número de archivos recibidos: " + files.length);
+        if (files == null || files.length == 0) {
+            return new ResponseEntity<>("No se recibieron archivos", HttpStatus.BAD_REQUEST);
         }
+        // Validar que src sea 1 o 2
+        if (src != 1 && src != 2) {
+            return new ResponseEntity<>("Parámetro 'src' inválido. Debe ser 1 (imágenes) o 2 (videos)", HttpStatus.BAD_REQUEST);
+        }
+        // Determinar la ruta según el valor de src
+        String ftpPath;
+        if (src == 1) {
+            // Ruta para imágenes
+            ftpPath = "/domains/asesoriascedemusa.com/public_html/assets/img/";
+            System.out.println("Guardando en ruta de imágenes");
+        } else {
+            // Ruta para videos (src == 2)
+            ftpPath = "/domains/asesoriascedemusa.com/public_html/assets/img/vid/";
+            System.out.println("Guardando en ruta de videos");
+        }
+
         FTPClient ftpClient = new FTPClient();
-        System.out.println("VALIDACIONES 20");
-        System.out.println(ftpServer + ftpPort + ftpUsername + ftpPassword);
-        System.out.println("VALIDACIONES FIN  20");
-        try (InputStream inputStream = file.getInputStream()) {
+        List<String> uploadedFiles = new ArrayList<>();
+        List<String> failedFiles = new ArrayList<>();
+        try {
             ftpClient.connect(ftpServer, ftpPort);
             ftpClient.login(ftpUsername, ftpPassword);
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            //boolean uploaded = ftpClient.storeFile("/domains/asesoriascedemusa.com/public_html/assets/img/" + file.getOriginalFilename(), inputStream);
-            boolean uploaded = ftpClient.storeFile("/domains/asesoriascedemusa.com/public_html/assets/img/vid/"
-                    + file.getOriginalFilename(), inputStream);
-            if (uploaded) {
-                System.out.println("Archivo subido exitosamente 20");
-                return new ResponseEntity<>("Archivo subido exitosamente", HttpStatus.OK);
-            } else {
-                System.out.println("Error al subir el archivo");
-                return new ResponseEntity<>("Error al subir el archivo", HttpStatus.INTERNAL_SERVER_ERROR);
+            // Procesar cada archivo
+            for (MultipartFile file : files) {
+                if (file.isEmpty()) {
+                    failedFiles.add(file.getOriginalFilename() + " (archivo vacío)");
+                    continue;
+                }
+
+                try (InputStream inputStream = file.getInputStream()) {
+                    String fullPath = ftpPath + file.getOriginalFilename();
+                    System.out.println("Subiendo archivo a: " + fullPath);
+
+                    boolean uploaded = ftpClient.storeFile(fullPath, inputStream);
+
+                    if (uploaded) {
+                        System.out.println("Archivo subido exitosamente a: " + fullPath);
+                        uploadedFiles.add(file.getOriginalFilename());
+                    } else {
+                        System.out.println("Error al subir el archivo: " + file.getOriginalFilename());
+                        failedFiles.add(file.getOriginalFilename());
+                    }
+                } catch (IOException e) {
+                    System.out.println("Error al procesar el archivo: " + file.getOriginalFilename());
+                    failedFiles.add(file.getOriginalFilename() + " (error: " + e.getMessage() + ")");
+                }
             }
+
+            // Construir respuesta
+            StringBuilder response = new StringBuilder();
+            if (!uploadedFiles.isEmpty()) {
+                response.append("Archivos subidos exitosamente: ").append(uploadedFiles.size())
+                        .append(" a ").append(src == 1 ? "imágenes" : "videos");
+            }
+            if (!failedFiles.isEmpty()) {
+                if (response.length() > 0) {
+                    response.append(". ");
+                }
+                response.append("Archivos fallidos: ").append(failedFiles.size());
+            }
+
+            if (uploadedFiles.isEmpty() && !failedFiles.isEmpty()) {
+                return new ResponseEntity<>(response.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            } else if (!uploadedFiles.isEmpty()) {
+                return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("No se procesaron archivos", HttpStatus.BAD_REQUEST);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error al conectar con el servidor FTP");
-            return new ResponseEntity<>("Error al conectar con el servidor FTP", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Error al conectar con el servidor FTP: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             try {
                 if (ftpClient.isConnected()) {
