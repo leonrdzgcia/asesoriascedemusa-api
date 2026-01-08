@@ -23,4 +23,8 @@ public class VideoService {
     public List<VideoModel> buscarVideos(){
         return videoRepository.buscarVideos();
     }
+
+    public VideoModel guardarVideo(VideoModel video){
+        return videoRepository.save(video);
+    }
 }

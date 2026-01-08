@@ -10,8 +10,12 @@ public class VideoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id",unique = true, nullable = false)
     private Long id;
+
     @Column(name="video")
     private String nombreArchivo;
+
+    @Column(name="clase")
+    private Long clase;
 
     public Long getId() {
         return id;
@@ -27,5 +31,13 @@ public class VideoModel {
 
     public void setNombreArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo;
+    }
+
+    public Long getClase() {
+        return clase;
+    }
+
+    public void setClase(Long clase) {
+        this.clase = clase;
     }
 }
