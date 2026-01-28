@@ -15,7 +15,7 @@ public class VideoModel {
     private String nombreArchivo;
 
     @Column(name="clase")
-    private Long clase;
+    private String clase;
 
     public Long getId() {
         return id;
@@ -33,11 +33,11 @@ public class VideoModel {
         this.nombreArchivo = nombreArchivo;
     }
 
-    public Long getClase() {
+    public String getClase() {
         return clase;
     }
 
-    public void setClase(Long clase) {
+    public void setClase(String clase) {
         this.clase = clase;
     }
 }
