@@ -1,8 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.ArchivosftpModel;
-import com.example.demo.models.AsignacionModel;
 import com.example.demo.services.FtpService;
+import com.example.demo.services.VideoService;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -43,10 +43,15 @@ public class FileUploadController {
     @Autowired
     private FtpService ftpService;
 
+    @Autowired
+    private VideoService videoService;
+
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(
             @RequestParam("file") MultipartFile[] files,
-            @RequestParam(value = "src", defaultValue = "2") int src) {
+            @RequestParam(value = "src", defaultValue = "2") int src,
+            @RequestParam(value = "video", required = false) String video,
+            @RequestParam(value = "catalogo", required = false) String catalogo) {
         System.out.println("-- /upload ");
         System.out.println("-- src: " + src);
         System.out.println("-- Número de archivos recibidos: " + files.length);
@@ -93,6 +98,19 @@ public class FileUploadController {
                     if (uploaded) {
                         System.out.println("Archivo subido exitosamente a: " + fullPath);
                         uploadedFiles.add(file.getOriginalFilename());
+
+                        // Insertar registro en tabla videos si se enviaron video y catalogo
+                        if (video != null && catalogo != null) {
+                            try {
+                                VideoModel videoModel = new VideoModel();
+                                videoModel.setNombreArchivo(video);
+                                videoModel.setClase(catalogo);
+                                videoService.guardarVideo(videoModel);
+                                System.out.println("Registro insertado en tabla videos: " + video + " - " + catalogo);
+                            } catch (Exception dbEx) {
+                                System.out.println("Error al insertar en tabla videos: " + dbEx.getMessage());
+                            }
+                        }
                     } else {
                         System.out.println("Error al subir el archivo: " + file.getOriginalFilename());
                         failedFiles.add(file.getOriginalFilename());
