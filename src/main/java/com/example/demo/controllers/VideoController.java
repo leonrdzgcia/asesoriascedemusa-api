@@ -1,7 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.AsignacionModel;
-import com.example.demo.services.AsignacionService;
 import com.example.demo.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
