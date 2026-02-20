@@ -46,13 +46,6 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
-		<!-- Google Cloud Platform -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
-			<version>1.2.3.RELEASE</version>
-		</dependency>
-
 		<!-- Commons Net -->
 		<dependency>
 			<groupId>commons-net</groupId>
