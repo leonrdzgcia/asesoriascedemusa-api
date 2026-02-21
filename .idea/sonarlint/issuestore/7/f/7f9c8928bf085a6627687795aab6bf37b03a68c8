@@ -1,13 +1,0 @@
-
-Œ
-java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ç¡‘J8‘Ü›Ûø1
-_
-java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8›Ü›Ûø1
-L	java:S106"+Replace this use of System.out by a logger.(•Ì°Öûÿÿÿÿ8Ü›Ûø1
-G	java:S106"+Replace this use of System.out by a logger.(Ã—¯â8Ü›Ûø1
-G	java:S106"+Replace this use of System.out by a logger.(¬ŸÕÀ8¢Ü›Ûø1
-b
-java:S4684"@Replace this persistent entity with a simple POJO or DTO object.(à™Ş¥ıÿÿÿÿ8ŸÜ›Ûø1
-L	java:S106,"+Replace this use of System.out by a logger.(òñìøÿÿÿÿ8£Ü›Ûø1
-L	java:S1063"+Replace this use of System.out by a logger.(Ãë„£şÿÿÿÿ8ñÛø1
-L	java:S1069"+Replace this use of System.out by a logger.(Î·î¿üÿÿÿÿ8Ş…Šİø1
