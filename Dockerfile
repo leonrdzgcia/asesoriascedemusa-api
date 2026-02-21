@@ -9,7 +9,8 @@ RUN ./mvnw package -DskipTests -B
 FROM eclipse-temurin:11-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
+ENV PORT=8080
+EXPOSE $PORT
 ENTRYPOINT ["java", \
   "-XX:+UseContainerSupport", \
   "-XX:MaxRAMPercentage=75.0", \
