@@ -10,10 +10,6 @@ FROM eclipse-temurin:11-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
 ENV PORT=8080
+ENV JAVA_OPTS="-Xms64m -Xmx256m -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError -XX:+UseSerialGC"
 EXPOSE $PORT
-ENTRYPOINT ["java", \
-  "-XX:+UseContainerSupport", \
-  "-XX:MaxRAMPercentage=75.0", \
-  "-XX:InitialRAMPercentage=50.0", \
-  "-XX:+ExitOnOutOfMemoryError", \
-  "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
